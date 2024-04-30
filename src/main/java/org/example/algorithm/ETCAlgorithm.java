@@ -51,7 +51,7 @@ public class ETCAlgorithm implements BanditAlgorithm {
 
     private static int getBestArm(double[] empiricalMeans) {
         double bestValue = Double.MIN_VALUE;
-        int bestIndex = -1;
+        int bestIndex = 0;
         for (int i = 0; i < empiricalMeans.length; i++) {
             if (empiricalMeans[i] > bestValue) {
                 bestIndex = i;

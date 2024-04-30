@@ -1,11 +1,9 @@
 package org.example.test;
 
 import org.example.algorithm.ETCAlgorithm;
-import org.example.bandit.StochasticBandit;
-import org.example.bandit.StochasticBanditCreator;
-import org.example.bandit.StochasticBanditRun;
-import org.example.bandit.StochasticBanditRunResult;
+import org.example.bandit.*;
 import org.example.distribution.DistributionUtils;
+import org.example.strategy.ExperimentRunner;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
@@ -47,6 +45,27 @@ public class GaussianBanditETCTest {
         System.out.println(Arrays.toString(result.getArmsSelected()));
         System.out.println(Arrays.toString(result.getRewards()));
         System.out.println(Arrays.toString(result.getCumulativeRegret()));
+    }
+
+    @Test
+    public void test3() {
+        StochasticBandit stoch = StochasticBanditCreator.createOneGaussianSeedBandits(List.of(1.0, 0.5, 0.0), 1);
+
+        int n = 100;
+        int numRuns = 500;
+
+        ExperimentRunner runner = new ExperimentRunner();
+        int[] mAry = new int[] {1, 2, 3, 4, 5, 10, 15, 20, 40};
+        for (int m : mAry) {
+            ETCAlgorithm etcAlgorithm = new ETCAlgorithm(m);
+            StochasticBanditExperiment experiment = runner.getExperiment(etcAlgorithm, numRuns, n, stoch);
+            System.out.println("m " + m);
+            System.out.println("% optimal: " + experiment.getPercentOptimal()[n-1]);
+            System.out.println("Reward: " + experiment.getMeanRewards()[n-1]);
+            System.out.println("Cum Regret: " + experiment.getCumulativeMeanRegret()[n-1]);
+            System.out.println("Cum Std Regret: " + Math.sqrt(experiment.getCumulativeVarianceRegret()[n-1]));
+            System.out.println("--------");
+        }
     }
 
 

@@ -47,9 +47,13 @@ public class StochasticBanditExperiment {
         return cumulativeMeanRegret;
     }
 
+    public double[] getCumulativeVarianceRegret() {
+        return cumulativeVarianceRegret;
+    }
+
     private void evaluateStats() {
         this.meanRewards = new double[n];
-        double frac = 1 / this.numRuns;
+        double frac = 1.0 / this.numRuns;
         for (StochasticBanditRunResult runResult : runResults) {
             double[] rewards = runResult.getRewards();
             for (int i = 0; i < rewards.length; i++) {
