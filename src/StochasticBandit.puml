@@ -1,0 +1,40 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+interface Distribution {
+    sample();
+    getMean();
+}
+
+class StochasticBandit {
+}
+
+class StochasticBanditRun {
+
+}
+
+class StochasticBanditRunResult {
+    double[] rewards;
+    double[] armsSelected;
+}
+
+class StochasticBanditExperiment {
+
+}
+
+class Reward {
+     double[] rewards;
+}
+
+StochasticBandit o-- "arms" Distribution
+StochasticBanditRun o-- "bandit" StochasticBandit
+StochasticBanditRun *-- "rewards" Reward
+StochasticBanditRunResult *-- "run" StochasticBanditRun
+StochasticBanditExperiment *-- "runResults" StochasticBanditRunResult
+StochasticBanditExperiment o-- "bandit" StochasticBandit
+
+
+
+
+@enduml
