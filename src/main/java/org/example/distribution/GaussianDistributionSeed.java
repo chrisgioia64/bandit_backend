@@ -2,6 +2,8 @@ package org.example.distribution;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class GaussianDistributionSeed implements Distribution {
@@ -13,12 +15,17 @@ public class GaussianDistributionSeed implements Distribution {
 
     private Random randV;
 
+    private List<DistributionParameter> parameterList;
+
 
     public GaussianDistributionSeed(double mean, double sd, int seed) {
         this.mean = mean;
         this.sd = sd;
         this.randU = new Random(seed);
         this.randV = new Random(seed);
+        this.parameterList = new LinkedList<>();
+        this.parameterList.add(new DistributionParameter("mean", mean));
+        this.parameterList.add(new DistributionParameter("sd", sd));
     }
 
     @Override
@@ -37,5 +44,15 @@ public class GaussianDistributionSeed implements Distribution {
     @Override
     public double getVariance() {
         return sd * sd;
+    }
+
+    @Override
+    public String getDistributionName() {
+        return "Gaussian";
+    }
+
+    @Override
+    public List<DistributionParameter> getDistributionParameters() {
+        return parameterList;
     }
 }

@@ -39,4 +39,14 @@ public class StochasticBanditCreator {
         return new StochasticBandit(dists);
     }
 
+    public static StochasticBandit createGaussianSeedBandits(List<Double> means, double sd, int seed) {
+        Distribution[] dists = new Distribution[means.size()];
+        for (int i = 0; i < means.size(); i++) {
+            double mean = means.get(i);
+            Distribution dist = new GaussianDistributionSeed(mean, sd, seed + i);
+            dists[i] = dist;
+        }
+        return new StochasticBandit(dists);
+    }
+
 }

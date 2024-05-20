@@ -47,4 +47,25 @@ public class GaussianBanditEpsGreedyTest {
         }
     }
 
+    @Test
+    public void test3() {
+        StochasticBandit stoch = StochasticBanditCreator.createGaussianSeedBandits(List.of(1.0, 0.5, 0.0), 0.2, 1);
+
+        int n = 100;
+        int numRuns = 500;
+
+        ExperimentRunner runner = new ExperimentRunner();
+        double[] mAry = new double[] {0.05, 0.1, 0.2, 0.3};
+        for (double epsilon : mAry) {
+            EpsilonGreedyAlgorithm etcAlgorithm = new EpsilonGreedyAlgorithm(epsilon);
+            StochasticBanditExperiment experiment = runner.getExperiment(etcAlgorithm, numRuns, n, stoch);
+            System.out.println("epsilon " + epsilon);
+            System.out.println("% optimal: " + experiment.getPercentOptimal()[n-1]);
+            System.out.println("Reward: " + experiment.getMeanRewards()[n-1]);
+            System.out.println("Cum Regret: " + experiment.getCumulativeMeanRegret()[n-1]);
+            System.out.println("Cum Std Regret: " + Math.sqrt(experiment.getCumulativeVarianceRegret()[n-1]));
+            System.out.println("--------");
+        }
+    }
+
 }

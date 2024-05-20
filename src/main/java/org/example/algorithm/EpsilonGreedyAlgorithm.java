@@ -5,15 +5,23 @@ import org.apache.commons.math3.distribution.UniformRealDistribution;
 import org.example.bandit.StochasticBanditRun;
 import org.example.bandit.StochasticBanditRunResult;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class EpsilonGreedyAlgorithm implements BanditAlgorithm {
 
     private double epsilon;
     private UniformRealDistribution uniformRealDistribution;
 
+    private List<AlgorithmParameter> list;
+
     public EpsilonGreedyAlgorithm(double epsilon) {
         this.epsilon = epsilon;
         this.uniformRealDistribution = new UniformRealDistribution();
+        this.list = new ArrayList<>();
+        list.add(new AlgorithmParameter("epsilon", epsilon));
     }
+
     @Override
     public StochasticBanditRunResult execute(StochasticBanditRun run) {
         int n = run.getN();
@@ -35,7 +43,7 @@ public class EpsilonGreedyAlgorithm implements BanditAlgorithm {
         }
         while (t < n) {
             int idx = -1;
-            if (uniformRealDistribution.sample() < epsilon) {
+            if (uniformRealDistribution.sample() < (epsilon / t)) {
                 // Randomly choose
                 idx =  discreteDistribution.sample();
             } else {
@@ -53,6 +61,16 @@ public class EpsilonGreedyAlgorithm implements BanditAlgorithm {
             t++;
         }
         return new StochasticBanditRunResult(armsSelected, rewards, run);
+    }
+
+    @Override
+    public String getAlgorithmName() {
+        return null;
+    }
+
+    @Override
+    public List<AlgorithmParameter> getAlgorithmParameters() {
+        return list;
     }
 
     private int getArgmax(double[] empiricalMeans) {

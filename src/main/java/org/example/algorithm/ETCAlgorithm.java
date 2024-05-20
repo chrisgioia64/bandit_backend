@@ -4,13 +4,18 @@ import org.example.bandit.StochasticBanditRun;
 import org.example.bandit.StochasticBanditRunResult;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ETCAlgorithm implements BanditAlgorithm {
 
     private int m;
+    private List<AlgorithmParameter> parameterList;
 
     public ETCAlgorithm(int m) {
         this.m = m;
+        parameterList = new LinkedList<>();
+        parameterList.add(new AlgorithmParameter("m", m));
     }
 
     @Override
@@ -47,6 +52,16 @@ public class ETCAlgorithm implements BanditAlgorithm {
             count++;
         }
         return new StochasticBanditRunResult(armsSelected, rewards, run);
+    }
+
+    @Override
+    public String getAlgorithmName() {
+        return "ETC";
+    }
+
+    @Override
+    public List<AlgorithmParameter> getAlgorithmParameters() {
+        return parameterList;
     }
 
     private static int getBestArm(double[] empiricalMeans) {
