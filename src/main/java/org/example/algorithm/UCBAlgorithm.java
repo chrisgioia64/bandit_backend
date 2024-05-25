@@ -5,10 +5,27 @@ import org.example.bandit.StochasticBanditExperiment;
 import org.example.bandit.StochasticBanditRun;
 import org.example.bandit.StochasticBanditRunResult;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class UCBAlgorithm implements BanditAlgorithm {
+
+    private double ucbFraction;
+
+    private List<AlgorithmParameter> list;
+
+    public UCBAlgorithm(double ucbFraction) {
+        this.ucbFraction = ucbFraction;
+        this.list = new ArrayList<>();
+        list.add(new AlgorithmParameter("ucbFraction", ucbFraction));
+    }
+
+    public UCBAlgorithm() {
+        this.ucbFraction = 1.0;
+        this.list = new ArrayList<>();
+        list.add(new AlgorithmParameter("ucbFraction", ucbFraction));
+    }
 
     @Override
     public StochasticBanditRunResult execute(StochasticBanditRun run) {
@@ -26,7 +43,7 @@ public class UCBAlgorithm implements BanditAlgorithm {
             double reward = rewardDatum.getRewards()[t];
             numPulls[t] = 1;
             empiricalMeans[t] = reward;
-            ucbs[t] = empiricalMeans[t] + Math.sqrt(Math.log(2 * n * n) / numPulls[t]);
+            ucbs[t] = empiricalMeans[t] + ucbFraction * Math.sqrt(Math.log(2 * n * n) / numPulls[t]);
             armsSelected[t] = t;
             rewards[t] = reward;
             t++;
@@ -39,7 +56,7 @@ public class UCBAlgorithm implements BanditAlgorithm {
             int p = numPulls[maxUcb];
             empiricalMeans[maxUcb] = empiricalMeans[maxUcb] * (p - 1.0) / p + reward / p;
             armsSelected[t] = maxUcb;
-            ucbs[maxUcb] = empiricalMeans[maxUcb] * Math.sqrt(Math.log(2 * n * n) / numPulls[maxUcb]);
+            ucbs[maxUcb] = empiricalMeans[maxUcb] + ucbFraction * Math.sqrt(Math.log(2 * n * n) / numPulls[maxUcb]);
             rewards[t] = reward;
             t++;
         }
@@ -53,7 +70,7 @@ public class UCBAlgorithm implements BanditAlgorithm {
 
     @Override
     public List<AlgorithmParameter> getAlgorithmParameters() {
-        return Arrays.asList();
+        return list;
     }
 
     public static int getMaxUcbs(double[] ucbs) {

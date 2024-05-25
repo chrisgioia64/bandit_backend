@@ -1,6 +1,16 @@
 package org.example.algorithm;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class AlgorithmParameter {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     private String parameterName;
 
@@ -9,6 +19,14 @@ public class AlgorithmParameter {
     public AlgorithmParameter(String parameterName, double value) {
         this.parameterName = parameterName;
         this.value = value;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getParameterName() {
