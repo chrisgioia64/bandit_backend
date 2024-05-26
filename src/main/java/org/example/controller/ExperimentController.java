@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.apache.coyote.Response;
 import org.example.algorithm.BanditAlgorithm;
 import org.example.algorithm.UCBAlgorithm;
 import org.example.bandit.StochasticBandit;
@@ -10,6 +11,7 @@ import org.example.model.EntityFactory;
 import org.example.service.MainService;
 import org.example.strategy.ExperimentRunner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,8 +22,6 @@ import java.util.List;
 @RestController
 public class ExperimentController {
 
-    @Autowired
-    private ExperimentRunner experimentRunner;
 
     @Autowired
     private MainService mainService;
@@ -39,16 +39,20 @@ public class ExperimentController {
     }
 
     @PostMapping("/runExperiment")
-    private StochasticBanditExperiment runExperiment(@RequestBody ExperimentParameters parameters) {
-        BanditAlgorithm algorithm = AlgorithmFactory.createAlgorithm(parameters.getAlgorithmRequest());
-        StochasticBandit bandit = BanditFactory.createBandit(parameters.getBanditRequest());
+    private ResponseEntity<?> runExperiment(@RequestBody ExperimentParameters parameters) {
         int n = parameters.getN();
         int numRuns = parameters.getNumTrials();
-        StochasticBanditExperiment experiment = experimentRunner.getExperiment(algorithm,
-                numRuns, n, bandit);
-        List<AnalysisDataPointEntity> entities = EntityFactory.createEntity(experiment, algorithm, bandit, n);
-        mainService.saveAllDatapoints(entities);
-        return experiment;
+        List<BanditAlgorithm> banditAlgorithms = AlgorithmFactory.createAlgorithms(n);
+        StochasticBandit bandit = BanditFactory.createBandit(parameters.getBanditRequest());
+
+        mainService.runExperiments(banditAlgorithms, bandit, numRuns, n);
+
+//        StochasticBanditExperiment experiment = experimentRunner.getExperiment(algorithm,
+//                numRuns, n, bandit);
+//
+//        List<AnalysisDataPointEntity> entities = EntityFactory.createEntity(experiment, algorithm, bandit, n);
+//        mainService.saveAllDatapoints(entities);
+        return ResponseEntity.ok("OK");
     }
 
     @PostMapping("/runExperiment3")

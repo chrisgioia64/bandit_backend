@@ -13,7 +13,7 @@ public class ExperimentParameterEntity {
     @OneToOne(cascade = CascadeType.ALL)
     private AlgorithmEntity algorithm;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private BanditEntity bandit;
 
     public long getId() {
@@ -38,5 +38,14 @@ public class ExperimentParameterEntity {
 
     public void setBandit(BanditEntity bandit) {
         this.bandit = bandit;
+    }
+
+    @Override
+    public String toString() {
+        return "ExperimentParameterEntity{" +
+                "id=" + id +
+                ", algorithm=" + algorithm +
+                ", bandit=" + bandit +
+                '}';
     }
 }
