@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example.controller.dto;
 
 import org.example.bandit.StochasticBandit;
 import org.example.distribution.BernoulliDistribution;

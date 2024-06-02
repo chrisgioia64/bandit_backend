@@ -1,13 +1,15 @@
 package org.example.controller;
 
-import org.apache.coyote.Response;
 import org.example.algorithm.BanditAlgorithm;
 import org.example.algorithm.UCBAlgorithm;
 import org.example.bandit.StochasticBandit;
 import org.example.bandit.StochasticBanditCreator;
 import org.example.bandit.StochasticBanditExperiment;
-import org.example.model.AnalysisDataPointEntity;
-import org.example.model.EntityFactory;
+import org.example.controller.dto.AlgorithmFactory;
+import org.example.controller.dto.BanditFactory;
+import org.example.controller.dto.ExperimentDto;
+import org.example.controller.dto.ExperimentParameters;
+import org.example.model.ExperimentParameterEntity;
 import org.example.service.MainService;
 import org.example.strategy.ExperimentRunner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ExperimentController {
@@ -47,16 +50,18 @@ public class ExperimentController {
 
         mainService.runExperiments(banditAlgorithms, bandit, numRuns, n);
 
-//        StochasticBanditExperiment experiment = experimentRunner.getExperiment(algorithm,
-//                numRuns, n, bandit);
-//
-//        List<AnalysisDataPointEntity> entities = EntityFactory.createEntity(experiment, algorithm, bandit, n);
-//        mainService.saveAllDatapoints(entities);
         return ResponseEntity.ok("OK");
     }
 
-    @PostMapping("/runExperiment3")
-    private ExperimentParameters runExperiment3(@RequestBody ExperimentParameters parameters) {
-        return parameters;
+//    @GetMapping("/getExperiments")
+//    private ResponseEntity<?> getExperiments() {
+//        Map<Long, List<ExperimentParameterEntity>> result = mainService.getAllExperiments();
+//        return ResponseEntity.ok(result);
+//    }
+
+    @GetMapping("/getExperiments")
+    private ResponseEntity<?> getAllExperimentData() {
+        Map<Long, ExperimentDto> experiments = mainService.getExperiments();
+        return ResponseEntity.ok(experiments);
     }
 }

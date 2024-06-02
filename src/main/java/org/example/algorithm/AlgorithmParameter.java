@@ -21,6 +21,10 @@ public class AlgorithmParameter {
         this.value = value;
     }
 
+    public AlgorithmParameter() {
+        
+    }
+
     public long getId() {
         return id;
     }

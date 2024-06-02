@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example.controller.dto;
 
 import java.util.LinkedList;
 import java.util.List;

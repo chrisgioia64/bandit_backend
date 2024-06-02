@@ -1,4 +1,7 @@
-package org.example.controller;
+package org.example.controller.dto;
+
+import org.example.controller.dto.AlgorithmRequest;
+import org.example.controller.dto.BanditRequest;
 
 public class ExperimentParameters {
 

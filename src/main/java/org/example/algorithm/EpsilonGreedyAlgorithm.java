@@ -65,7 +65,7 @@ public class EpsilonGreedyAlgorithm implements BanditAlgorithm {
 
     @Override
     public String getAlgorithmName() {
-        return null;
+        return "EpsilonGreedy";
     }
 
     @Override

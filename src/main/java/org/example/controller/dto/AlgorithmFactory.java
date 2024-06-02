@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example.controller.dto;
 
 import org.example.algorithm.BanditAlgorithm;
 import org.example.algorithm.ETCAlgorithm;

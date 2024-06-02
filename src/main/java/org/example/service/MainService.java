@@ -3,6 +3,7 @@ package org.example.service;
 import org.example.algorithm.BanditAlgorithm;
 import org.example.bandit.StochasticBandit;
 import org.example.bandit.StochasticBanditExperiment;
+import org.example.controller.dto.ExperimentDto;
 import org.example.model.*;
 import org.example.repository.AnalysisDataPointRepository;
 import org.example.repository.BanditRepository;
@@ -12,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.parser.Entity;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MainService {
@@ -28,12 +32,6 @@ public class MainService {
 
     @Autowired
     private ExperimentRunner experimentRunner;
-
-    public void saveAllDatapoints(List<AnalysisDataPointEntity> entities) {
-        ExperimentParameterEntity experimentParameter = entities.get(0).getExperimentParameter();
-        experimentParameterRepository.save(experimentParameter);
-        analysisDataPointRepository.saveAll(entities);
-    }
 
     public void runExperiments(List<BanditAlgorithm> banditAlgorithms, StochasticBandit bandit,
                                int numRuns, int n) {
@@ -54,5 +52,41 @@ public class MainService {
             analysisDataPointRepository.saveAll(entities);
         }
     }
+
+    public Map<Long, List<ExperimentParameterEntity>> getAllExperiments() {
+        List<ExperimentParameterEntity> entities = experimentParameterRepository.findAll();
+        Map<Long, List<ExperimentParameterEntity>> result = new HashMap<>();
+        for (ExperimentParameterEntity entity : entities) {
+            long id = entity.getBandit().getId();
+            List<ExperimentParameterEntity> list = result.getOrDefault(id, new LinkedList<>());
+            list.add(entity);
+            result.put(id, list);
+        }
+        return result;
+    }
+
+    public Map<Long, ExperimentDto> getExperiments() {
+        Map<Long, ExperimentDto> map = new HashMap<>();
+        List<AnalysisDataPointEntity> datapoints = analysisDataPointRepository.findAll();
+        for (AnalysisDataPointEntity datapoint : datapoints) {
+            ExperimentParameterEntity experimentParameter = datapoint.getExperimentParameter();
+            BanditEntity banditEntity = experimentParameter.getBandit();
+            long banditEntityId = banditEntity.getId();
+            ExperimentDto dto = map.get(banditEntityId);
+            if (dto == null) {
+                dto = new ExperimentDto();
+                dto.setBanditEntity(banditEntity);
+                dto.setDataPointMaps(new HashMap<>());
+            }
+            long algorithmId = experimentParameter.getAlgorithm().getId();
+            List<AnalysisDataPointEntity> list = dto.getDataPointMaps().getOrDefault(algorithmId, new LinkedList<>());
+            list.add(datapoint);
+            dto.getDataPointMaps().put(algorithmId, list);
+            map.put(banditEntityId, dto);
+        }
+        return map;
+    }
+
+
 
 }

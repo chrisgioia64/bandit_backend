@@ -3,7 +3,6 @@ package org.example.model;
 import org.example.algorithm.BanditAlgorithm;
 import org.example.bandit.StochasticBandit;
 import org.example.bandit.StochasticBanditExperiment;
-import org.example.controller.Algorithm;
 import org.example.distribution.Distribution;
 
 import java.util.LinkedList;

@@ -21,6 +21,10 @@ public class DistributionParameter {
         this.parameterValue = parameterValue;
     }
 
+    public DistributionParameter() {
+
+    }
+
     public String getParameterName() {
         return parameterName;
     }
