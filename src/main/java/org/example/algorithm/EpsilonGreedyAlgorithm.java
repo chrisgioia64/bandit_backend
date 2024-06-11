@@ -4,6 +4,8 @@ import org.apache.commons.math3.distribution.UniformIntegerDistribution;
 import org.apache.commons.math3.distribution.UniformRealDistribution;
 import org.example.bandit.StochasticBanditRun;
 import org.example.bandit.StochasticBanditRunResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,8 @@ public class EpsilonGreedyAlgorithm implements BanditAlgorithm {
     private UniformRealDistribution uniformRealDistribution;
 
     private List<AlgorithmParameter> list;
+
+    private Logger logger = LoggerFactory.getLogger(EpsilonGreedyAlgorithm.class);
 
     public EpsilonGreedyAlgorithm(double epsilon) {
         this.epsilon = epsilon;
@@ -43,7 +47,8 @@ public class EpsilonGreedyAlgorithm implements BanditAlgorithm {
         }
         while (t < n) {
             int idx = -1;
-            if (uniformRealDistribution.sample() < (epsilon / t)) {
+            double s = uniformRealDistribution.sample();
+            if (s < (epsilon / t)) {
                 // Randomly choose
                 idx =  discreteDistribution.sample();
             } else {

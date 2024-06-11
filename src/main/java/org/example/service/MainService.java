@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.apache.commons.math3.analysis.function.Exp;
 import org.example.algorithm.BanditAlgorithm;
 import org.example.bandit.StochasticBandit;
 import org.example.bandit.StochasticBanditExperiment;
@@ -66,8 +67,18 @@ public class MainService {
     }
 
     public Map<Long, ExperimentDto> getExperiments() {
-        Map<Long, ExperimentDto> map = new HashMap<>();
         List<AnalysisDataPointEntity> datapoints = analysisDataPointRepository.findAll();
+        return getExperiments(datapoints);
+    }
+
+    public ExperimentDto getExperimentById(long id) {
+        List<AnalysisDataPointEntity> datapoints = analysisDataPointRepository.getDatapointsByExperimentId(id);
+        Map<Long, ExperimentDto> map = getExperiments(datapoints);
+        return map.get(id);
+    }
+
+    public Map<Long, ExperimentDto> getExperiments(List<AnalysisDataPointEntity> datapoints) {
+        Map<Long, ExperimentDto> map = new HashMap<>();
         for (AnalysisDataPointEntity datapoint : datapoints) {
             ExperimentParameterEntity experimentParameter = datapoint.getExperimentParameter();
             BanditEntity banditEntity = experimentParameter.getBandit();

@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.apache.commons.math3.analysis.function.Exp;
 import org.example.algorithm.BanditAlgorithm;
 import org.example.algorithm.UCBAlgorithm;
 import org.example.bandit.StochasticBandit;
@@ -14,15 +15,13 @@ import org.example.service.MainService;
 import org.example.strategy.ExperimentRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@CrossOrigin
 public class ExperimentController {
 
 
@@ -53,15 +52,15 @@ public class ExperimentController {
         return ResponseEntity.ok("OK");
     }
 
-//    @GetMapping("/getExperiments")
-//    private ResponseEntity<?> getExperiments() {
-//        Map<Long, List<ExperimentParameterEntity>> result = mainService.getAllExperiments();
-//        return ResponseEntity.ok(result);
-//    }
-
     @GetMapping("/getExperiments")
     private ResponseEntity<?> getAllExperimentData() {
         Map<Long, ExperimentDto> experiments = mainService.getExperiments();
         return ResponseEntity.ok(experiments);
+    }
+
+    @GetMapping("/getExperimentById/{id}")
+    private ResponseEntity<?> getExperimentById(@PathVariable int id) {
+        ExperimentDto dto = mainService.getExperimentById(id);
+        return ResponseEntity.ok(dto);
     }
 }
