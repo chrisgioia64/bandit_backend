@@ -1,12 +1,25 @@
 package org.example.controller.dto;
 
+/**
+ * Persisted in the database
+ */
 public class AlgorithmRequest {
 
+    /**
+     * An enumeration describing the type of algorithm (e.g. ETC, UCB, EpsilonGreedy)
+     */
     private Algorithm algorithm;
 
+    /**
+     * The epsilon (percent) to perform an exploration action
+     */
     private double epsilon;
 
+    /**
+     * Used in ETC algorithm to determine the number of times to choose an arm in the exploration phase
+     */
     private int m;
+
 
     private double ucbFraction;
 

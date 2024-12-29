@@ -1,6 +1,7 @@
 package org.example.model;
 
 import jakarta.persistence.*;
+import lombok.ToString;
 import org.example.distribution.DistributionParameter;
 
 import java.util.List;
@@ -39,5 +40,10 @@ public class DistributionEntity {
 
     public void setParameters(List<DistributionParameter> parameters) {
         this.parameters = parameters;
+    }
+
+    @Override
+    public String toString() {
+        return distributionName;
     }
 }

@@ -1,6 +1,7 @@
 package org.example.bandit;
 
 import org.example.distribution.Distribution;
+import org.example.distribution.DistributionParameter;
 
 /**
  * A collection of arms where each arm is an IID distribution of rewards
@@ -33,6 +34,19 @@ public class StochasticBandit {
             bestArm = i;
         }
         return bestArm;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        for (Distribution arm : arms) {
+            b.append(arm.getDistributionName() + " (");
+            for (DistributionParameter parameter : arm.getDistributionParameters()) {
+                b.append(parameter.getParameterName() + " : " + parameter.getParameterValue());
+            }
+            b.append("), ");
+        }
+        return b.toString();
     }
 
 

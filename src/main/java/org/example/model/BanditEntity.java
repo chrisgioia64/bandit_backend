@@ -30,4 +30,8 @@ public class BanditEntity {
     public void setDistributions(List<DistributionEntity> distributions) {
         this.distributions = distributions;
     }
+
+    public String toString() {
+        return distributions.toString();
+    }
 }

@@ -3,24 +3,27 @@
 
 
 interface Distribution {
+    a probability distribution
     sample();
     getMean();
 }
 
 class StochasticBandit {
+    // a multi-armed bandit setup
 }
 
 class StochasticBanditRun {
-
+   // a single run for a stochastic bandit
 }
 
 class StochasticBanditRunResult {
+    // the application of an algorithm on a stochastic bandit run
     double[] rewards;
     double[] armsSelected;
 }
 
 class StochasticBanditExperiment {
-
+   // a complete experiment (with multiple runs)
 }
 
 class Reward {

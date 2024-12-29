@@ -40,4 +40,5 @@ public class DistributionParameter {
     public void setParameterValue(double parameterValue) {
         this.parameterValue = parameterValue;
     }
+
 }

@@ -6,6 +6,7 @@ import org.example.bandit.StochasticBanditRunResult;
 import java.util.List;
 
 public interface BanditAlgorithm {
+
     StochasticBanditRunResult execute(StochasticBanditRun run);
 
     public String getAlgorithmName();
