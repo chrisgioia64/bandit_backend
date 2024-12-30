@@ -14,6 +14,7 @@ import org.example.controller.dto.AlgorithmFactory;
 import org.example.controller.dto.BanditFactory;
 import org.example.controller.dto.ExperimentDto;
 import org.example.controller.dto.ExperimentParameters;
+import org.example.model.BanditEntity;
 import org.example.model.ExperimentParameterEntity;
 import org.example.service.CloudWatchProxyService;
 import org.example.service.MainService;
@@ -67,7 +68,7 @@ public class ExperimentController {
 
     @GetMapping("/getExperiments")
     private ResponseEntity<?> getAllExperimentData(@RequestHeader Map<String, String> headers) throws JsonProcessingException {
-        Map<Long, ExperimentDto> experiments = cloudWatchProxyService.getAllExperiments(headers);
+        List<BanditEntity> experiments = cloudWatchProxyService.getAllExperiments(headers);
         return ResponseEntity.ok(experiments);
     }
 
@@ -75,5 +76,10 @@ public class ExperimentController {
     private ResponseEntity<?> getExperimentById(@PathVariable int id, @RequestHeader Map<String, String> headers) {
         ExperimentDto dto = cloudWatchProxyService.getExperimentById(id, headers);
         return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping("/success")
+    public ResponseEntity<?> success() {
+        return ResponseEntity.ok("success");
     }
 }

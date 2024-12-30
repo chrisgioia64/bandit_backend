@@ -10,6 +10,7 @@ import org.example.controller.dto.AlgorithmFactory;
 import org.example.controller.dto.BanditFactory;
 import org.example.controller.dto.ExperimentDto;
 import org.example.controller.dto.ExperimentParameters;
+import org.example.model.BanditEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,14 +29,14 @@ public class CloudWatchProxyService {
     @Autowired
     private MyCloudwatchService myCloudwatchService;
 
-    public Map<Long, ExperimentDto> getAllExperiments(Map<String, String> headers) {
+    public List<BanditEntity> getAllExperiments(Map<String, String> headers) {
         long start = System.currentTimeMillis();
-        Map<Long, ExperimentDto> experiments = mainService.getExperiments();
+        List<BanditEntity> bandits = mainService.getExperiments();
         long end = System.currentTimeMillis();
         double timeTaken = (end - start) / 1000.0;
 
         APILogEntry logEntry = new APILogEntry(CloudWatchLogEntry.CloudWatchLogType.API, CloudWatchLogEntry.Level.INFO,
-                "API Call for /getExperiments", "Returned " + experiments.size() + " experiments");
+                "API Call for /getExperiments", "Returned " + bandits.size() + " experiments");
         logEntry.setUserAgent(headers.get("user-agent"));
         logEntry.setSecondsTaken(timeTaken);
 
@@ -44,7 +45,7 @@ public class CloudWatchProxyService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        return experiments;
+        return bandits;
     }
 
     public ExperimentDto getExperimentById(int id, Map<String, String> headers) {

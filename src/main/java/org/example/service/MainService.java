@@ -68,9 +68,11 @@ public class MainService {
         return result;
     }
 
-    public Map<Long, ExperimentDto> getExperiments() {
-        List<AnalysisDataPointEntity> datapoints = analysisDataPointRepository.findAll();
-        return getExperiments(datapoints);
+    public List<BanditEntity> getExperiments() {
+        List<BanditEntity> bandits = banditRepository.findAll();
+//        List<AnalysisDataPointEntity> datapoints = analysisDataPointRepository.findAll();
+//        return getExperiments(datapoints);
+        return bandits;
     }
 
     public ExperimentDto getExperimentById(long id) {
@@ -99,6 +101,8 @@ public class MainService {
         }
         return map;
     }
+
+
 
 
 
