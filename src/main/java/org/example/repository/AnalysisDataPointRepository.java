@@ -1,5 +1,6 @@
 package org.example.repository;
 
+import jakarta.transaction.Transactional;
 import org.example.model.AnalysisDataPointEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,5 +15,6 @@ public interface AnalysisDataPointRepository extends JpaRepository<AnalysisDataP
             " ON a.experiment_id = e.id WHERE e.bandit_id = ?1",
         nativeQuery = true)
     List<AnalysisDataPointEntity> getDatapointsByExperimentId(long id);
+
 
 }

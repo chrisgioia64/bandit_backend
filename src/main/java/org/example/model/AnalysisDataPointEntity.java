@@ -6,7 +6,12 @@ import org.hibernate.annotations.Cascade;
 @Entity
 public class AnalysisDataPointEntity {
 
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY
+
     @Id
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "analysis_data_gen")
+//    @SequenceGenerator(name = "analysis_data_gen", sequenceName = "analysis_data", allocationSize = 100)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 

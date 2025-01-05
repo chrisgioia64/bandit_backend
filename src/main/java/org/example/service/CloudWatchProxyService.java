@@ -11,6 +11,8 @@ import org.example.controller.dto.BanditFactory;
 import org.example.controller.dto.ExperimentDto;
 import org.example.controller.dto.ExperimentParameters;
 import org.example.model.BanditEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ public class CloudWatchProxyService {
 
     @Autowired
     private MyCloudwatchService myCloudwatchService;
+
+    private Logger logger = LoggerFactory.getLogger(CloudWatchProxyService.class);
 
     public List<BanditEntity> getAllExperiments(Map<String, String> headers) {
         long start = System.currentTimeMillis();
@@ -74,6 +78,7 @@ public class CloudWatchProxyService {
         mainService.runExperiments(banditAlgorithms, bandit, numRuns, n);
         long end = System.currentTimeMillis();
         double timeTaken = (end - start) / 1000.0;
+//        logger.info("Time taken " + timeTaken);
 
         APILogEntry logEntry = new APILogEntry(CloudWatchLogEntry.CloudWatchLogType.API, CloudWatchLogEntry.Level.INFO,
                 "API Call for /runExperiment/", "Bandit Distributions " + bandit.toString());

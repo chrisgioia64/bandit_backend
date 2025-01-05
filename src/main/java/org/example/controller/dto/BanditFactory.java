@@ -5,7 +5,25 @@ import org.example.distribution.BernoulliDistribution;
 import org.example.distribution.Distribution;
 import org.example.distribution.GaussianDistribution;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class BanditFactory {
+
+    public static BanditRequest getFromExperimentFrontendDataType(ExperimentFrontendDataType type) {
+        BanditRequest request = new BanditRequest();
+        List<DistributionRequest> list = new LinkedList<>();
+        for (ExperimentFrontendDataType.Distribution distribution : type.getDistributions()) {
+            DistributionRequest distRequest = new DistributionRequest();
+            distRequest.setMean(distribution.getMean() != null ? distribution.getMean() : 0);
+            distRequest.setSd(distribution.getStdDev() != null ? distribution.getStdDev() : 0);
+            distRequest.setP(distribution.getP() != null ? distribution.getP() : 0);
+            distRequest.setDistributionType(DistributionType.valueOf(distribution.getType().toUpperCase()));
+            list.add(distRequest);
+        }
+        request.setDistributionRequest(list);
+        return request;
+    }
 
     public static StochasticBandit createBandit(BanditRequest request) {
         int k = request.getDistributionRequest().size();
